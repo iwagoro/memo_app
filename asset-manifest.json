@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/memo_app/static/css/main.073c9b0a.css",
-    "main.js": "/memo_app/static/js/main.dc154f90.js",
+    "main.js": "/memo_app/static/js/main.61653e2b.js",
     "static/js/787.e0826b76.chunk.js": "/memo_app/static/js/787.e0826b76.chunk.js",
     "static/media/logo.svg": "/memo_app/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/memo_app/index.html",
     "main.073c9b0a.css.map": "/memo_app/static/css/main.073c9b0a.css.map",
-    "main.dc154f90.js.map": "/memo_app/static/js/main.dc154f90.js.map",
+    "main.61653e2b.js.map": "/memo_app/static/js/main.61653e2b.js.map",
     "787.e0826b76.chunk.js.map": "/memo_app/static/js/787.e0826b76.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.073c9b0a.css",
-    "static/js/main.dc154f90.js"
+    "static/js/main.61653e2b.js"
   ]
 }
