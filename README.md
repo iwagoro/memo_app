@@ -15,3 +15,6 @@
 3.```npm run start``` or  ```yarn start``` to run app
 
 or you can use this app from [here](https://iwagoro.github.io/memo_app/)
+
+
+**※You need Google Account or Email to login this app**
