@@ -12,6 +12,7 @@ function Memo() {
     const { handleSubmit } = useForm();
     const [NOTES_NAME, setNOTES_NAME] = useState([]);
     const { docObject, setDocObject, docName, setDocName, userInfo, setUserInfo } = useContext(memoData);
+    const [selectFunction, setSelectFunction] = useState(-1);
 
     useEffect(() => {
         INIT_NOTE();
@@ -20,13 +21,13 @@ function Memo() {
     const INIT_NOTE = async () => {
         setDocName("");
         setDocObject([]);
-        const snapshot = await getDocs(collection(db, "User", userInfo.displayName, "Memos"));
+        const snapshot = await getDocs(collection(db, "User", userInfo.email, "Memos"));
         const noteNames = snapshot.docs.map((doc) => doc.id);
         setNOTES_NAME(noteNames);
     };
 
     const GET_DATA = async (note) => {
-        const docSnap = await getDoc(doc(db, "User", userInfo.displayName, "Memos", note));
+        const docSnap = await getDoc(doc(db, "User", userInfo.email, "Memos", note));
 
         if (docSnap.exists()) {
             const noteData = Object.keys(docSnap.data()).map((value) => ({
@@ -57,7 +58,14 @@ function Memo() {
             </ListItem>
             {NOTES_NAME.map((note, index) => (
                 <ListItem sx={{ padding: "0", "&:hover": { backgroundColor: "#232323" } }}>
-                    <IconButton disableRipple sx={{ padding: "18px", justifyContent: "flex-start", width: "100%", fontFamily: "Inter", fontSize: "12px" }} onClick={() => GET_DATA(note)}>
+                    <IconButton
+                        disableRipple
+                        sx={{ color: selectFunction === index ? "#ff8c00" : "gray", padding: "18px", justifyContent: "flex-start", width: "100%", fontFamily: "Inter", fontSize: "12px" }}
+                        onClick={() => {
+                            GET_DATA(note);
+                            setSelectFunction(index);
+                        }}
+                    >
                         <div style={{ paddingLeft: "calc(1.5vw + 17px)" }}>{note}</div>
                     </IconButton>
                 </ListItem>

@@ -35,7 +35,7 @@ const PostNote = () => {
 
     const POST_NOTE = async (e) => {
         if (NOTE_NAME !== "") {
-            await setDoc(doc(db, "User", userInfo.displayName, "Notes", NOTE_NAME), {
+            await setDoc(doc(db, "User", userInfo.email, "Notes", NOTE_NAME), {
                 content: NOTE,
                 edited_date: date,
             });

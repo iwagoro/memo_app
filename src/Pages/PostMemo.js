@@ -53,7 +53,7 @@ const PostData = () => {
         console.log(DOC_NAME);
         if (DOC_NAME !== "") {
             window.location.reload();
-            await deleteDoc(doc(db, "User", "Memos", DOC_NAME));
+            await deleteDoc(doc(db, "User",userInfo.email,"Memos", DOC_NAME));
         }
     };
 
@@ -65,7 +65,7 @@ const PostData = () => {
         });
 
         if (name !== "") {
-            await setDoc(doc(db, "User", userInfo.displayName, "Memos", name), DOC_DATA);
+            await setDoc(doc(db, "User", userInfo.email, "Memos", name), DOC_DATA);
             window.location.reload();
         }
     };
