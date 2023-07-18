@@ -19,5 +19,3 @@ or you can use this app from [here](https://iwagoro.github.io/memo_app/)
 
 **※You need Google Account or Email to login this app**
 
-
-//認証しても個人ごとにフォルを作成する機能は未完成
