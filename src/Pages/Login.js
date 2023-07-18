@@ -18,8 +18,9 @@ import PostNote from "./PostNote.js";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import useMedia from "use-media";
 import { signInWithPopup, GoogleAuthProvider, signInWithRedirect, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { db, auth, provider, actionCodeSettings } from "./Firebase";
-import { collection, getDoc, where, query, doc, setDoc, addDoc, add ,deleteDoc} from "firebase/firestore";
+import {st, db, auth, provider } from "./Firebase";
+import { collection, getDoc,getDocs, where, query, doc, setDoc, addDoc, add ,deleteDoc} from "firebase/firestore";
+import { uploadBytes,ref } from "firebase/storage";
 
 const theme = createTheme({
     palette: {
@@ -65,10 +66,16 @@ const Login = () => {
 
     const clickLogin = () => {
         signInWithPopup(auth, provider)
-            .then((info) => {
-                console.log("workd");
-                console.log(info);
-                window.location.reload();
+            .then(async (info) => {
+                const userRef = await getDoc(doc(db,'User',info.user.email))
+                console.log(info.user.email)
+                if(userRef._document === null){
+                    createRepository(info.user.email)
+                    console.log('you are new user')
+                }else{
+                    console.log('you are already user')
+                }
+                
             })
             .catch((err) => {
                 console.log(err);
@@ -94,16 +101,35 @@ const Login = () => {
             });
     };
 
+    
+    const createRepository = async (email) => {
+  const userRef = doc(db, 'User', email);
+  const memosRef = doc(collection(userRef,'Memos'), 'hello');
+  const notesRef = doc(collection(userRef,'Notes'), 'hello');
+
+  // emailコレクションを作成
+  await setDoc(userRef, {});
+
+  // memosRefとnotesRefにドキュメントを作成
+  await setDoc(memosRef, {});
+  await setDoc(notesRef, {});
+
+  // ドキュメントにデータを設定する処理を追加
+  // ...
+
+  const filePath = email + '/hello.txt'; // フォルダとファイル名を含めたパス
+  const fileRef = ref(st, filePath);
+  await uploadBytes(fileRef, 'This is Your Storage!');
+};
+
+
+        
+
     const emailRegister = () => {
 
-        const createRepository = async email => {
-            await setDoc(doc(collection(db, 'User', email, 'Memos'), 'test'), {})
-            await setDoc(doc(collection(db, 'User', email, 'Notes'), 'test'), {})
-            await deleteDoc(doc(db, "User",email,"Memos", 'test'));
-            await deleteDoc(doc(db, "User",email,"Notes", 'test'));
+        
 
-            
-        }
+
 
         const values = getValues();
         createUserWithEmailAndPassword(auth, values.registerEmail, values.registerPassword)

@@ -36,8 +36,9 @@ import PostNote from "./PostNote.js";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import useMedia from "use-media";
 import { signInWithPopup, GoogleAuthProvider, signInWithRedirect, signOut } from "firebase/auth";
-import { db, auth, provider } from "./Firebase";
-import { collection, getDoc, where, query, doc, setDoc, addDoc, add } from "firebase/firestore";
+import { db, auth, provider,st } from "./Firebase";
+import { collection, getDoc, where, query, doc, setDoc, addDoc, add, deleteDoc } from "firebase/firestore";
+import {deleteObject, ref,uploadBytes} from 'firebase/storage'
 
 export const memoData = createContext();
 export const imageData = createContext();
@@ -161,6 +162,8 @@ const Home = () => {
         imageURL,
         setImageURL,
         resizableWidth,
+        userInfo,
+        setUserInfo
     };
 
     useEffect(() => {
@@ -175,7 +178,7 @@ const Home = () => {
         setDocObject([]);
         setDocName("");
         setAsyncUserInfo(auth.currentUser);
-        console.log(auth.currentUser);
+        //console.log(auth.currentUser);
     }, [functionSelect]);
 
     const handleMouseDown = (event) => {
@@ -198,8 +201,10 @@ const Home = () => {
         document.addEventListener("mouseup", handleMouseUp);
     };
 
-    const logout = () => {
+    const logout = async () => {
+
         signOut(auth, provider);
+
     };
 
     return (
