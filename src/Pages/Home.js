@@ -36,9 +36,9 @@ import PostNote from "./PostNote.js";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import useMedia from "use-media";
 import { signInWithPopup, GoogleAuthProvider, signInWithRedirect, signOut } from "firebase/auth";
-import { db, auth, provider,st } from "./Firebase";
+import { db, auth, provider, st } from "./Firebase";
 import { collection, getDoc, where, query, doc, setDoc, addDoc, add, deleteDoc } from "firebase/firestore";
-import {deleteObject, ref,uploadBytes} from 'firebase/storage'
+import { deleteObject, ref, uploadBytes } from "firebase/storage";
 
 export const memoData = createContext();
 export const imageData = createContext();
@@ -163,7 +163,7 @@ const Home = () => {
         setImageURL,
         resizableWidth,
         userInfo,
-        setUserInfo
+        setUserInfo,
     };
 
     useEffect(() => {
@@ -202,9 +202,7 @@ const Home = () => {
     };
 
     const logout = async () => {
-
         signOut(auth, provider);
-
     };
 
     return (
@@ -236,7 +234,6 @@ const Home = () => {
                                                 <IconButton disableRipple sx={{ width: "100%", justifyContent: "flex-start", fontFamily: "Inter", fontSize: "12px" }} onClick={logout}>
                                                     <LogoutIcon fontSize="small" sx={{ paddingRight: "1.5vw" }} /> Log Out
                                                 </IconButton>
-                                                
                                             </ListItem>
                                         </List>
                                     </AccordionDetails>

@@ -46,7 +46,6 @@ const StorageView = () => {
         GET_DIRECTRY(root);
     }, []);
 
-
     const GET_DIRECTRY = async (directory) => {
         console.log(directory);
         const storageRef = ref(st, directory);

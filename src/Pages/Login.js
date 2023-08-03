@@ -1,26 +1,13 @@
 import { createContext, useEffect, useState, useRef } from "react";
 import { Modal, Button, Drawer, Card, Grid, Box, List, ListItem, IconButton, Typography, Divider, Icon, TextareaAutosize, AppBar, Toolbar, TextField, Menu, Dialog } from "@mui/material";
-import DataObjectIcon from "@mui/icons-material/DataObject";
-import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
-import StorageIcon from "@mui/icons-material/Storage";
-import Memo from "./Memo";
-import WindowIcon from "@mui/icons-material/Window";
 import GoogleIcon from "@mui/icons-material/Google";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import LinearScaleIcon from "@mui/icons-material/LinearScale";
-import Note from "./Note";
-import Storage from "./Storage";
-import StorageView from "./StorageView.js";
-import PostMemo from "./PostMemo.js";
 import { useForm } from "react-hook-form";
-import PostNote from "./PostNote.js";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import useMedia from "use-media";
 import { signInWithPopup, GoogleAuthProvider, signInWithRedirect, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import {st, db, auth, provider } from "./Firebase";
-import { collection, getDoc,getDocs, where, query, doc, setDoc, addDoc, add ,deleteDoc} from "firebase/firestore";
-import { uploadBytes,ref } from "firebase/storage";
+import { st, db, auth, provider } from "./Firebase";
+import { collection, getDoc, getDocs, where, query, doc, setDoc, addDoc, add, deleteDoc } from "firebase/firestore";
+import { uploadBytes, ref } from "firebase/storage";
 
 const theme = createTheme({
     palette: {
@@ -67,15 +54,14 @@ const Login = () => {
     const clickLogin = () => {
         signInWithPopup(auth, provider)
             .then(async (info) => {
-                const userRef = await getDoc(doc(db,'User',info.user.email))
-                console.log(info.user.email)
-                if(userRef._document === null){
-                    createRepository(info.user.email)
-                    console.log('you are new user')
-                }else{
-                    console.log('you are already user')
+                const userRef = await getDoc(doc(db, "User", info.user.email));
+                console.log(info.user.email);
+                if (userRef._document === null) {
+                    createRepository(info.user.email);
+                    console.log("you are new user");
+                } else {
+                    console.log("you are already user");
                 }
-                
             })
             .catch((err) => {
                 console.log(err);
@@ -101,45 +87,36 @@ const Login = () => {
             });
     };
 
-    
     const createRepository = async (email) => {
-  const userRef = doc(db, 'User', email);
-  const memosRef = doc(collection(userRef,'Memos'), 'hello');
-  const notesRef = doc(collection(userRef,'Notes'), 'hello');
+        const userRef = doc(db, "User", email);
+        const memosRef = doc(collection(userRef, "Memos"), "hello");
+        const notesRef = doc(collection(userRef, "Notes"), "hello");
 
-  // emailコレクションを作成
-  await setDoc(userRef, {});
+        // emailコレクションを作成
+        await setDoc(userRef, {});
 
-  // memosRefとnotesRefにドキュメントを作成
-  await setDoc(memosRef, {});
-  await setDoc(notesRef, {});
+        // memosRefとnotesRefにドキュメントを作成
+        await setDoc(memosRef, {});
+        await setDoc(notesRef, {});
 
-  // ドキュメントにデータを設定する処理を追加
-  // ...
+        // ドキュメントにデータを設定する処理を追加
+        // ...
 
-  const filePath = email + '/hello.txt'; // フォルダとファイル名を含めたパス
-  const fileRef = ref(st, filePath);
-  await uploadBytes(fileRef, 'This is Your Storage!');
-};
-
-
-        
+        const filePath = email + "/hello.txt"; // フォルダとファイル名を含めたパス
+        const fileRef = ref(st, filePath);
+        await uploadBytes(fileRef, "This is Your Storage!");
+    };
 
     const emailRegister = () => {
-
-        
-
-
-
         const values = getValues();
         createUserWithEmailAndPassword(auth, values.registerEmail, values.registerPassword)
             .then((userCredential) => {
                 // アカウント作成が成功した場合の処理
                 const user = userCredential.user;
-                
+
                 console.log("新しいユーザーアカウントが作成されました:", user);
                 // 他の処理を追加するか、リダイレクトなどの操作を行う
-                createRepository(user.email)
+                createRepository(user.email);
             })
             .catch((error) => {
                 // アカウント作成が失敗した場合の処理

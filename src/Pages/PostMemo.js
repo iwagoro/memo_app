@@ -53,7 +53,7 @@ const PostData = () => {
         console.log(DOC_NAME);
         if (DOC_NAME !== "") {
             window.location.reload();
-            await deleteDoc(doc(db, "User",userInfo.email,"Memos", DOC_NAME));
+            await deleteDoc(doc(db, "User", userInfo.email, "Memos", DOC_NAME));
         }
     };
 

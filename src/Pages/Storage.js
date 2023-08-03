@@ -37,7 +37,7 @@ const Storage = () => {
     const root = "gs://react-test-34de3.appspot.com";
     const [tableData, setTableData] = useState([]);
 
-    const { imageURL, setImageURL,userInfo,setUserInfo } = useContext(imageData);
+    const { imageURL, setImageURL, userInfo, setUserInfo } = useContext(imageData);
     const [directory, setDirectory] = useState(root);
     const [metadata, setMetadata] = useState({});
 
@@ -49,7 +49,7 @@ const Storage = () => {
 
     const UPLOAD_FILE = (e) => {
         const file = e.target.files[0];
-        const storageRef = ref(st, directory.slice(33, directory.length) + "/"+ userInfo.email +'/'+ e.target.files[0].name);
+        const storageRef = ref(st, directory.slice(33, directory.length) + "/" + userInfo.email + "/" + e.target.files[0].name);
         const uploadTask = uploadBytesResumable(storageRef, file);
         uploadTask.on("state_changed", (snapshot) => {
             const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -68,12 +68,12 @@ const Storage = () => {
 
     const onClick = async (e) => {
         const filteredData = tableData.filter((item) => item.name === e.target.textContent);
-        console.log(filteredData)
+        console.log(filteredData);
         if (filteredData[0].type === "フォルダ") {
             setDirectory(root + "/" + filteredData[0].name);
             GET_DIRECTRY(root + "/" + filteredData[0].name);
         } else {
-            const storageRef = ref(st, directory + "/" +userInfo.email+'/'+ filteredData[0].name);
+            const storageRef = ref(st, directory + "/" + userInfo.email + "/" + filteredData[0].name);
             const url = await getDownloadURL(storageRef).catch((err) => {
                 console.log("error", err);
             });
@@ -103,7 +103,7 @@ const Storage = () => {
     };
 
     const GET_DIRECTRY = async (directory) => {
-        const storageRef = ref(st, directory+'/'+userInfo.email);
+        const storageRef = ref(st, directory + "/" + userInfo.email);
         const tableData = [];
 
         try {

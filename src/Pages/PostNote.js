@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { db } from "./Firebase.js";
-import { setDoc, doc } from "firebase/firestore";
+import { setDoc, doc,onSnapshot, collection } from "firebase/firestore";
 import { List, Box, ListItem, IconButton, TextareaAutosize } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import { memoData } from "./Home.js";
@@ -13,10 +13,19 @@ const PostNote = () => {
 
     useEffect(() => {
         setDate(getDate());
+        
     }, []);
+
+    useEffect(()=>{
+        const result = onSnapshot( doc(db,'User',userInfo.email),docSnap => {
+            console.log(docSnap)
+        } )
+        
+    },[NOTE_NAME])
 
     useEffect(() => {
         SET_ALL_NOTE();
+        
     }, [docName]);
 
     const SET_ALL_NOTE = () => {
@@ -34,6 +43,7 @@ const PostNote = () => {
     };
 
     const POST_NOTE = async (e) => {
+
         if (NOTE_NAME !== "") {
             await setDoc(doc(db, "User", userInfo.email, "Notes", NOTE_NAME), {
                 content: NOTE,
