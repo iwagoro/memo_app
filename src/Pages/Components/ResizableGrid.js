@@ -1,25 +1,51 @@
 import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
+import { jsx, css } from "@emotion/react";
+import styled from "@emotion/styled";
+
+
+//◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤//
+
+const ResizableMainContainer = styled.div`
+  ${(props) => props.styles}
+`;
+
+const ResizableWallContainer = styled.div`
+  ${(props) => props.styles}
+`;
+
+const ResizableSidebarContainer = styled.div`
+  ${(props) => props.styles}
+`;
+
+const ResizableMain = ({ children, sx }) => {
+    const styles = css(sx);
+    return <ResizableMainContainer styles={styles}>{children}</ResizableMainContainer>;
+};
+
+const ResizableSidebar = ({ children, sx }) => {
+    const styles = css(sx);
+    return <ResizableSidebarContainer styles={styles}>{children}</ResizableSidebarContainer>;
+};
+
+const ResizableWall = ({ children, sx }) => {
+    const styles = css(sx);
+    return <ResizableWallContainer styles={styles}>{children}</ResizableWallContainer>;
+};
+
+//◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤//
+
 
 const ResizableGrid = ({ children, sidebarMinSize, sidebarMaxSize }) => {
+
     const resizableElementRef = useRef(null);
     const parentWidth = useRef(null);
     const [ResizableWidth, setResizableWidth] = useState(0);
-    const [ResizableMain, setResizableMain] = useState([]);
-    const [ResizableWall,setResizableWall] = useState([])
-    const [ResizableSidebar, setResizableSidebar] = useState([]);
 
+    
     useEffect(() => {
         setResizableWidth(parentWidth.current.clientWidth / 2);
 
-        React.Children.map(children, (child) => {
-            if (child.type.name === "ResizableSidebar") {
-                setResizableSidebar(child);
-            } else if (child.type.name === "ResizableMain") {
-                setResizableMain(child);
-            } else if (child.type.name === "ResizableWall") {
-                setResizableWall(child);
-            }
-        });
+       
     }, []);
 
     const handleMouseDown = (event) => {
@@ -40,6 +66,8 @@ const ResizableGrid = ({ children, sidebarMinSize, sidebarMaxSize }) => {
         document.addEventListener("mouseup", handleMouseUp);
     };
 
+    
+
     return (
         <div id="background" style={{ width: "100%", height: "100%", display: "flex", overflow: "hidden" }} ref={parentWidth}>
             <div
@@ -50,10 +78,10 @@ const ResizableGrid = ({ children, sidebarMinSize, sidebarMaxSize }) => {
                 }}
                 ref={resizableElementRef}
             >
-                {ResizableSidebar}
+                {React.Children.map(children, child => {if(child.type.name === "ResizableSidebar")  return child})}
             </div>
             <div id="wall" style={{ height: "100%", width: "10px", cursor: "ew-resize" }} onMouseDown={handleMouseDown}>
-                {ResizableWall}
+                {React.Children.map(children, child => { if (child.type.name === "ResizableWall") return child })}
             </div>
             <div
                 id="main"
@@ -63,10 +91,10 @@ const ResizableGrid = ({ children, sidebarMinSize, sidebarMaxSize }) => {
                     minWidth: `calc(100% - ${ResizableWidth}px)`,
                 }}
             >
-                {ResizableMain}
+                {React.Children.map(children, child => { if (child.type.name === "ResizableMain") return child })}
             </div>
         </div>
     );
 };
 
-export default ResizableGrid;
+export {ResizableGrid,ResizableMain,ResizableSidebar,ResizableWall}
